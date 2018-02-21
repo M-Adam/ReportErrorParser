@@ -23,6 +23,46 @@ namespace ReportErrorParser
         public MainWindow()
         {
             InitializeComponent();
+
+        }
+
+        private void Paste_Click(object sender, RoutedEventArgs e)
+        {
+            var clipboardText = Clipboard.GetText();
+            if (!string.IsNullOrWhiteSpace(clipboardText))
+            {
+                ErrorTextBox.Text = clipboardText;
+            }
+        }
+
+        private void Copy_Click(object sender, RoutedEventArgs e)
+        {
+            var sqlText = SqlTextBox.Text;
+            if (!string.IsNullOrWhiteSpace(sqlText))
+            {
+                Clipboard.SetText(sqlText);
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(ErrorTextBox.Text))
+            {
+                MessageBox.Show("Nothing to parse!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            try
+            {
+                var result = Parser.Parse(ErrorTextBox.Text);
+                SqlTextBox.Text = result;
+            }
+            catch (ApplicationException exc)
+            {
+                MessageBox.Show(exc.Message, "Parsing error");
+                
+            }
+            
         }
     }
 }

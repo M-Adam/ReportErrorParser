@@ -5,8 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ReportErrorParser"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="Report error parser" MinHeight="350" MinWidth="490" Height="325.089" Width="404.593">
     <Grid>
-        
+        <GroupBox Header="Error" HorizontalAlignment="Stretch" MinHeight="137" MaxHeight="137" Margin="10,10,0,0" VerticalAlignment="Top" MinWidth="225">
+            <DockPanel HorizontalAlignment="Stretch" LastChildFill="True" FlowDirection="RightToLeft">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" MinWidth="85" MaxWidth="85">
+                    <Button Content="Paste" HorizontalAlignment="Right" Margin="10,10,0,0" VerticalAlignment="Top" MinWidth="75" Click="Paste_Click"/>
+                    <Button Content="Parse" HorizontalAlignment="Right" Margin="10,45,0,0" VerticalAlignment="Bottom" MinWidth="75" Height="30" Click="Button_Click"/>
+                </StackPanel>
+                <TextBox Name="ErrorTextBox" FlowDirection="LeftToRight" HorizontalAlignment="Stretch" MinHeight="95" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" MinWidth="350" />
+
+
+            </DockPanel>
+
+        </GroupBox>
+        <GroupBox Header="SQL" HorizontalAlignment="Stretch" MinHeight="159" Margin="10,152,0,0" VerticalAlignment="Stretch" MinWidth="350">
+            <DockPanel LastChildFill="True" FlowDirection="RightToLeft" HorizontalAlignment="Stretch">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Right" MinWidth="75">
+                    <Button Content="Copy" HorizontalAlignment="Right" Margin="10,10,0,0" VerticalAlignment="Bottom" MinWidth="75" Click="Copy_Click"/>
+                </StackPanel>
+                <TextBox Name="SqlTextBox"  VerticalScrollBarVisibility="Auto" FlowDirection="LeftToRight" HorizontalAlignment="Stretch" MinHeight="120" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Stretch" MinWidth="350"/>
+            </DockPanel>
+        </GroupBox>
+
     </Grid>
 </Window>
