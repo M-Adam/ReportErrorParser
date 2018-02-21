@@ -7,17 +7,8 @@ using System.Threading.Tasks;
 
 namespace ReportErrorParser.Logic
 {
-    public static partial class Parser
+    public static class Parser
     {
-        private const string EqualsFirst = "= ?";
-        private const string ExclFirst = "? =";
-        private const string IsFirst = "? IS";
-        private const string BracesFirst = "(?)";
-        private static readonly Regex EqualsFirstRegex = new Regex(Regex.Escape(EqualsFirst));
-        private static readonly Regex ExclFirstRegex = new Regex(Regex.Escape(ExclFirst));
-        private static readonly Regex IsFirstRegex = new Regex(Regex.Escape(IsFirst));
-        private static readonly Regex BracesFirstRegex = new Regex(Regex.Escape(BracesFirst));
-
         public static string Parse(string input)
         {
             var startIndex = input.IndexOf("SQL query string:");
@@ -52,44 +43,13 @@ namespace ReportErrorParser.Logic
 
         private static string ReplaceParameterInTheQuery(string queryWithoutParameters, QueryParameter parameter)
         {
-            var parsedParameter = "?";
-            var reg = new Regex("");
-
-            var replacementActions = new Dictionary<Action, int>()
+            if (!queryWithoutParameters.Contains("?"))
             {
-                [() =>
-                {
-                    parsedParameter = $" = {parameter.Value} ";
-                    reg = EqualsFirstRegex;
-                }
-                ] = queryWithoutParameters.IndexOf(EqualsFirst),
-                [() =>
-                {
-                    parsedParameter = $" {parameter.Value} = ";
-                    reg = ExclFirstRegex;
-                }
-                ] = queryWithoutParameters.IndexOf(ExclFirst),
-                [() =>
-                {
-                    parsedParameter = $" {parameter.Value} IS ";
-                    reg = IsFirstRegex;
-                }
-                ] = queryWithoutParameters.IndexOf(IsFirst),
-                [() =>
-                {
-                    parsedParameter = $"({parameter.Value})";
-                    reg = BracesFirstRegex;
-                }
-                ] = queryWithoutParameters.IndexOf(BracesFirst),
-            };
-
-            if (replacementActions.All(x => x.Value == -1))
-            {
-                throw new ApplicationException("No parameter to replace found for: " + parameter);
+                throw new ApplicationException($"No parameter '?' found to replace {parameter}");
             }
 
-            replacementActions.Where(x => x.Value != -1).OrderBy(x => x.Value).First().Key();
-            queryWithoutParameters = reg.Replace(queryWithoutParameters, parsedParameter, 1);
+            var parameterRegex = new Regex(Regex.Escape("?"));
+            queryWithoutParameters = parameterRegex.Replace(queryWithoutParameters, parameter.Value, 1);
             return queryWithoutParameters;
         }
     }
