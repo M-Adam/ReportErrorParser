@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ReportErrorParser.Logic;
 
 namespace ReportErrorParser
 {
@@ -23,7 +24,6 @@ namespace ReportErrorParser
         public MainWindow()
         {
             InitializeComponent();
-
         }
 
         private void Paste_Click(object sender, RoutedEventArgs e)
@@ -44,7 +44,7 @@ namespace ReportErrorParser
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Parse_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(ErrorTextBox.Text))
             {
@@ -57,12 +57,10 @@ namespace ReportErrorParser
                 var result = Parser.Parse(ErrorTextBox.Text);
                 SqlTextBox.Text = result;
             }
-            catch (ApplicationException exc)
+            catch (Exception exc)
             {
                 MessageBox.Show(exc.Message, "Parsing error");
-                
             }
-            
         }
     }
 }
